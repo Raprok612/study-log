@@ -1,0 +1,14 @@
+{
+  "files.autoSave": "off",
+  "files.autoSaveDelay": 1500,
+  "editor.formatOnSave": true,
+  "editor.wordWrap": "on",
+  "editor.renderWhitespace": "boundary",
+  "files.associations": {
+    "*.md": "markdown"
+  },
+  "markdown.preview.breaks": true,
+  "markdown.previewFrontMatter": "show",
+  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.editor.enablePreview": false
+}

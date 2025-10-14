@@ -1,0 +1,15 @@
+# VSCode
+.vscode/*
+!.vscode/settings.json
+
+# Python / Notebooks
+__pycache__/
+.ipynb_checkpoints/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs / temp
+*.log
+*.tmp
