@@ -5,3 +5,4 @@
 | SQLD Day 01 | 2025/10/13 | 데이터 모델링 3단계 복습 (개념→논리→물리) | SQLD | ✅ 완료 | [📄 day01_모델링](../sqld/notes/day01_모델링.md) |
 | SQLD Day 02 | 2025/10/14 | 정규화 4단계 복습 (1NF → 2NF → 3NF → BCNF) | SQLD | ✅ 완료 | [📄 day02_정규화](../sqld/notes/day02_정규화.md) |
 | SQLD Day 03 | 2025/10/15 | 식별자 관계 심화 (존재 종속 / ERD 표현) | SQLD | ✅ 완료 | [📄 day03_식별자관계](../sqld/notes/day03_식별자관계.md) |
+| SQLD Day 04 | 2025/10/17 | 관계차수 및 참조무결성 (1:N, M:N, FK 제약조건) | SQLD | ✅ 완료 | [📄 day04_관계차수](../sqld/notes/day04_관계차수.md) |
