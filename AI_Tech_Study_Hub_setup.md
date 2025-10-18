@@ -1,104 +1,105 @@
-# 🧭 AI & Tech Study Hub — 복원용 Setup 파일
-> 이 문서는 Notion, GitHub, SQLD 연동 프로젝트의 전체 구조와 상태를 복원하기 위한 설정 파일입니다.  
-> 새 ChatGPT 세션에서 이 파일을 업로드하면 이전 진행 상태를 완전히 이어서 복구할 수 있습니다.
+# 🧭 AI & Tech Study Hub Setup (2025)
+> 📚 SQLD / Growth Log / Certification 통합 관리 및 Git ↔ Notion 연동 규칙서  
+> 작성자: Jaerok Kim (Raprok612)  
+> 최신 업데이트: 2025-10-18
 
 ---
 
-## 🧩 전체 시스템 개요
+## 📂 Notion Page Structure
 
-### 🧱 구성 요소
-| 구성 | 설명 |
-|------|------|
-| 📘 **AI & Tech Study Hub** | 메인 허브 페이지 (전체 공부 관리 중심) |
-| 📈 **Growth Log** | Hub 내부의 “학습 기록용 표 보기 데이터베이스” |
-| 🎓 **Certifications** | 자격증 관련 공부 모음 페이지 |
-| 🟦 **SQLD Study Dashboard** | SQLD 자격증 준비용 서브 대시보드 페이지 |
-| 🐙 **GitHub Study-Log** | 학습 결과를 Markdown으로 버전 관리하는 저장소 |
+📘 **AI & Tech Study Hub**  
+│  
+├── 📈 **Growth Log**  
+│        └─ 학습 일지, SQLD / AI / MLOps 진척 관리 (표 보기 데이터베이스)  
+│  
+└── 🎓 **Certifications**  
+    └── 🟦 **SQLD Study Dashboard**  
+         ├─ SQLD 자격증 준비 일정 (10.13 ~ 11.16)  
+         ├─ 이론 / 기출 / 최종 정리 단계 구분  
+         ├─ `sqld/notes/` 기반 Git ↔ Notion 연동  
+         └─ 시험 전 최종 암기/오답 복습 관리
 
----
-
-## 🗂️ Notion 구조 (확정 버전)
-
-📘 **AI & Tech Study Hub**
- ┣ 📈 Growth Log
- ┗ 🎓 Certifications
-     ┗ 🟦 SQLD Study Dashboard
-         ├─ SQLD 자격증 준비 일정
-         ├─ 이론 / 기출 / 최종 정리 단계
-         └─ Notion → GitHub 연계 학습 기록
-
-### 📘 AI & Tech Study Hub 설정 요약
-- **Growth Log**: 표 보기 DB로 매일의 학습 기록 관리  
-- **Certifications**: SQLD, 정보처리기사, Network 등 하위 페이지 관리  
-- **상단 섹션**: callout 블록에 위 구조 다이어그램 삽입  
+> 💡 Notion의 **AI & Tech Study Hub**는 Git의 `study-log` 폴더 구조와 완전히 일치하도록 설계되어 있습니다.
 
 ---
 
-## 🧾 SQLD_Study_Dashboard.md (현재 GitHub 등록본)
-
-- 위치: `Study-Log/SQLD/SQLD_Study_Dashboard.md`
-- 커밋 메시지:
-  ```
-  chore(log): add SQLD Day 01 – 모델링 복습 (2025-10-13, KST)
-  ```
-- GitHub Repository: `https://github.com/Raprok612/Study-Log`
-- Notion 연결 위치: `🎓 Certifications` → `🟦 SQLD Study Dashboard`
-
----
-
-## 🌍 시간대 / 커밋 기준
-
-| 기준 | 지역 | 설명 |
-|------|------|------|
-| 현지 개발 시간 | 🇹🇭 태국 (UTC+7) | 실시간 커밋 기준 |
-| GitHub 히트맵 | UTC | 커밋 일자 계산 |
-| 목표 | 한국 기준 하루 1커밋 유지 (UTC+9 반영 시 약 2시간 오차) |
-
----
-
-## 💡 추천 작업 순서
-
-1️⃣ **Notion 연결**
-   - SQLD Study Dashboard 페이지에 “📈 Growth Log 바로가기” 링크 추가  
-   - AI & Tech Study Hub 상단에 다이어그램(callout) 블록 삽입  
-
-2️⃣ **GitHub 관리**
-   ```bash
-   cd ~/projects/Study-Log
-   git add .
-   git commit -m "chore(log): update SQLD Day 02 progress (YYYY-MM-DD, KST)"
-   git push
-   ```
-
-3️⃣ **Notion ↔ GitHub 주기적 백업**
-   - Notion 페이지 Export → Markdown  
-   - Study-Log 리포지토리의 동일 폴더(`SQLD/`)에 업로드  
-   - 주 1회 커밋으로 유지  
-
----
-
-## ⚙️ 자동화 / 향후 확장 계획
-
-| 항목 | 설명 |
-|------|------|
-| 🔁 Notion → GitHub 자동 백업 | weekly-log.yml (GitHub Actions)로 주간 자동 푸시 |
-| 🧠 Growth Log 자동 템플릿 | Day N 자동 생성 및 날짜 삽입 |
-| 🧩 SQLD 외 확장 | InfoProc, Network, Bootcamp 학습 페이지 추가 예정 |
-
----
-
-## 🧱 복원 지침 (새 채팅 시작 시)
-새 채팅에서 아래 한 줄 입력 후 이 파일을 업로드하세요 👇
-
+## 📂 1. 폴더 구조
 ```
-어제의 AI & Tech Study Hub setup 파일 기준으로 이어서 하자.
+projects/
+└── study-log/
+    ├── sqld/                       # SQLD 학습
+    │   ├── notes/                  # Day별 학습 노트 (Notion ↔ Git 연동)
+    │   ├── reference/              # 요약노트 / 참고자료
+    │   └── growth_log/             # 학습 인덱스 (Notion Growth Log 대응)
+    └── AI_Tech_Study_Hub_setup.md  # 이 문서
 ```
 
-이후 ChatGPT가 자동으로:
-- SQLD / Growth Log / Notion / GitHub 구조를 인식하고
-- 이전에 진행하던 연결 및 자동화 단계부터 재개합니다 ✅
+---
+
+## 🧩 2. 파일 작성 규칙
+
+### 🗓️ Day별 노트
+- 파일명: `dayNN_주제명.md`
+- 제목: `# SQLD Day NN – 주제명 (YYYY-MM-DD)`
+- 커밋 메시지:  
+  `chore(log): add SQLD Day NN – 주제명 (YYYY-MM-DD)`
+
+### 📈 Growth Log
+- 파일명: `growth_log/README.md`
+- 형식: 표 기반 Markdown  
+- Notion “표 보기”로 임포트 시 자동 변환됨
 
 ---
 
-🗓️ **마지막 업데이트:** 2025-10-13  
-✍️ **작성자:** Jaerok Kim (Raprok612)
+## 🔗 3. Notion ↔ Git 연동 규칙
+
+| 구분 | 설명 |
+|------|------|
+| 📘 **Notes** | Git의 `sqld/notes/` 폴더에서 작성 후 Notion에 업로드 |
+| 📗 **Growth Log** | `growth_log/README.md`의 표를 Notion 표로 동기화 |
+| 🎓 **Certifications** | SQLD Dashboard의 학습 단계별 목표 연결 |
+| 🧭 **링크 규칙** | `[📄 dayNN_주제명](../sqld/notes/dayNN_주제명.md)` 형식 유지 |
+
+---
+
+## 📅 4. 워크플로우
+```
+1️⃣ Day 학습 진행  
+2️⃣ Markdown 작성 및 정리  
+3️⃣ Git 커밋 및 푸시  
+4️⃣ Notion Growth Log 반영
+```
+> 매일 1회 커밋 원칙. 진척이 없을 경우 `chore(daily): maintenance log`로 일일 기록 유지.
+
+---
+
+## 🧠 5. 관리 원칙
+| 규칙 | 설명 |
+|------|------|
+| 🕒 매일 1회 커밋 | 학습 지속성 확보 |
+| 📂 폴더 일관성 | `notes` / `growth_log` 구분 명확 |
+| ✏️ 커밋 메시지 통일 | `(chore/log/daily)` prefix 사용 |
+| 🌱 Notion ↔ Git 동기화 | Markdown → Notion Import (드래그 앤 드롭) |
+| 🔄 백업 원칙 | GitHub 기준으로 버전 관리 (Notion은 프런트 대시보드 역할) |
+
+---
+
+## 💡 Notion 업로드 방법
+1️⃣ Notion 메인 페이지에서 `/import` 선택  
+2️⃣ **Markdown & CSV** → `AI_Tech_Study_Hub_Setup.md` 선택  
+3️⃣ 혹은 **파일 드래그 앤 드롭**으로 자동 변환  
+4️⃣ 페이지 속성(아이콘·태그)만 수동으로 재지정
+
+---
+
+## 📘 6. 커밋 예시
+```bash
+git add sqld/notes/day06_정규화.md
+git commit -m "chore(log): add SQLD Day 06 – 정규화 절차 및 BCNF (2025-10-18)"
+git push origin main
+```
+
+---
+
+> ✅ 이 문서는 `AI & Tech Study Hub`의 메인 구조 및 연동 기준 문서로,  
+> GitHub와 Notion을 모두 병행 운영할 때 반드시 최신 버전을 유지해야 합니다.
