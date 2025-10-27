@@ -1,101 +1,112 @@
-# SQLD Day 13 – 서브쿼리 (Subquery) 개념 및 활용 (2025-10-25)
+# **SQLD Day 13 – 서브쿼리(Subquery) 개념 및 활용 (2025-10-25)**
 > 📘 SQLD 2과목 | SQL 기본 및 응용  
 > 🧑‍💻 학습자: Jaerok Kim (Raprok612)
 
 ---
 
-## 🎯 학습 목표
-- 서브쿼리의 개념과 동작 순서 이해  
-- 단일행 / 다중행 / 상관(상호연관) / EXISTS 서브쿼리의 차이 숙지  
-- SELECT / FROM / WHERE / HAVING 내 서브쿼리 활용 패턴 학습  
-- EXISTS와 IN의 성능 차이 이해  
+## **🎯 학습 목표**
+- 서브쿼리의 개념 및 작성 원리 이해  
+- 단일행 / 다중행 / 다중컬럼 서브쿼리 구분  
+- 상관 서브쿼리와 EXISTS 절 활용
 
 ---
 
-## 🧠 이론 정리
+## **🧠 이론 정리**
 
-### 1️⃣ 서브쿼리 개념
-> 하나의 SQL문 안에 포함된 또 다른 SELECT문
+### **1️⃣ 서브쿼리의 개념**
+> 서브쿼리(Subquery)는 **하나의 SQL문 안에 포함된 또 다른 SQL문**을 의미한다.  
+> 메인쿼리(Main Query) 실행 전에 서브쿼리가 먼저 수행된다.
 
-- 메인쿼리보다 **먼저 실행**되어 결과를 반환  
-- 결과는 메인쿼리의 조건식, 비교값, 혹은 테이블로 사용 가능  
-
-```sql
-SELECT name, salary
-FROM employee
-WHERE salary > (SELECT AVG(salary) FROM employee);
-```
-
----
-
-### 2️⃣ 서브쿼리의 종류
-
-| 구분 | 결과 행 수 | 주요 연산자 | 설명 |
-|------|-------------|-------------|------|
-| **단일행 서브쿼리** | 1행 | =, >, <, >=, <= | 결과가 1행이 아닐 경우 오류 발생 |
-| **다중행 서브쿼리** | N행 | IN, ANY, ALL | 여러 값 중 하나 이상 비교 |
-| **상관 서브쿼리** | N행 | 메인쿼리 컬럼 참조 | 메인쿼리의 각 행마다 반복 수행 |
-| **EXISTS 서브쿼리** | 존재 여부 | EXISTS / NOT EXISTS | 결과 존재 여부만 확인 (성능 유리) |
-
----
-
-### 3️⃣ 위치별 활용
-
-| 위치 | 설명 | 예시 |
+| 구분 | 설명 | 예시 |
 |------|------|------|
-| **WHERE절** | 조건 비교 | `salary > (SELECT AVG(salary) FROM employee)` |
-| **FROM절 (인라인뷰)** | 임시 테이블로 활용 | `FROM (SELECT deptno, AVG(salary) AS avg_sal FROM emp GROUP BY deptno)` |
-| **SELECT절** | 파생 컬럼 계산 | `SELECT name, (SELECT COUNT(*) FROM orders WHERE emp_id=e.id)` |
-| **HAVING절** | 집계 조건 | `HAVING AVG(salary) > (SELECT AVG(salary) FROM employee)` |
+| **단일행 서브쿼리** | 결과가 하나의 행(Row)인 쿼리 | `=` `<` `>` |
+| **다중행 서브쿼리** | 여러 행 반환, IN / ANY / ALL 사용 | `IN`, `> ANY`, `< ALL` |
+| **다중컬럼 서브쿼리** | 여러 컬럼 비교 | `(deptno, job)` |
+| **상관 서브쿼리** | 메인쿼리 컬럼을 참조 | `EXISTS`, `NOT EXISTS` |
+
+> 💡 서브쿼리는 SELECT, FROM, WHERE, HAVING 절 어디서든 사용 가능하다.
 
 ---
 
-## 🧮 예제 및 실습
-
+### **2️⃣ 서브쿼리 유형별 예시**
+**단일행 서브쿼리**
 ```sql
--- 단일행
-SELECT ename, sal FROM emp
+SELECT ename, sal
+FROM emp
 WHERE sal > (SELECT AVG(sal) FROM emp);
-
--- 다중행
-SELECT deptno, ename FROM emp
-WHERE deptno IN (SELECT deptno FROM dept WHERE loc='SEOUL');
-
--- 상관 서브쿼리
-SELECT e1.ename, e1.sal FROM emp e1
-WHERE sal > (SELECT AVG(e2.sal) FROM emp e2 WHERE e1.deptno=e2.deptno);
-
--- EXISTS
-SELECT d.dname FROM dept d
-WHERE EXISTS (SELECT 1 FROM emp e WHERE e.deptno=d.deptno);
 ```
 
+**다중행 서브쿼리**
+```sql
+SELECT ename
+FROM emp
+WHERE deptno IN (SELECT deptno FROM dept WHERE loc = 'DALLAS');
+```
+
+**상관 서브쿼리**
+```sql
+SELECT e1.ename, e1.sal
+FROM emp e1
+WHERE sal > (SELECT AVG(e2.sal) FROM emp e2 WHERE e1.deptno = e2.deptno);
+```
+
+> ⚙️ 상관 서브쿼리는 메인쿼리의 각 행마다 반복 수행되므로 성능에 유의해야 한다.
+
 ---
 
-## ⚠️ 자주 하는 실수
-- 단일행 결과에 `IN` 사용, 다중행 결과에 `=` 사용 → 오류  
-- 상관 서브쿼리에서 메인 컬럼 누락 → 전체 비교 발생  
-- EXISTS는 결과값이 아닌 **존재 여부**만 판단한다.  
+### **3️⃣ EXISTS / NOT EXISTS**
+> EXISTS는 서브쿼리 결과의 존재 여부를 판단하며, **TRUE/FALSE**를 반환한다.
+
+```sql
+SELECT deptno, dname
+FROM dept d
+WHERE EXISTS (SELECT * FROM emp e WHERE e.deptno = d.deptno);
+```
+
+> 💡 EXISTS는 결과값보다는 “존재 유무” 자체를 평가하므로 **COUNT(*)보다 빠른 경우**가 많다.
 
 ---
 
-## 🧾 기출 복습
+## **⚙️ 모델링 유의사항**
+1. 서브쿼리는 중첩이 깊을수록 성능 저하 위험이 커진다.  
+2. 단일행과 다중행 서브쿼리를 구분하여 적절한 비교 연산자 사용  
+3. 상관 서브쿼리는 가능한 경우 JOIN으로 대체하는 것이 효율적  
+
+---
+
+## **⚙️ 핵심 요약**
+- 서브쿼리는 메인쿼리 내부에서 **보조적 데이터 검색**을 수행하는 쿼리이다.  
+- 단일행 / 다중행 / 상관 서브쿼리의 구조적 차이를 이해해야 한다.  
+- EXISTS는 효율적인 존재 검증용으로 실무에서 자주 활용된다.
+
+---
+
+## **🧮 예제 및 실습**
+- [x] 단일행 서브쿼리 – 평균 급여보다 높은 사원 조회  
+- [x] 다중행 서브쿼리 – 특정 지역 부서 소속 사원 조회  
+- [ ] EXISTS 서브쿼리 성능 비교 테스트  
+
+---
+
+## **🧾 기출 복습**
 | 회차 | 문항 | 주제 | 결과 | 비고 |
 |------|------|------|------|------|
-| 2024 1회 | Q41–Q45 | 단일행 / 다중행 서브쿼리 | ✅ | |
-| 2023 2회 | Q46–Q50 | EXISTS vs IN 비교 | ⚠ | 성능 관련 문제 출제 |
+| 2023 2회 | Q61–Q65 | 서브쿼리 유형 구분 | ✅ | 단일행 vs 다중행 조건 구분 |
+| 2022 1회 | Q56–Q60 | EXISTS / 상관 서브쿼리 | ⚠ | 성능 및 실행 순서 주의 |
+
+> 📘 **기출 출처:**  
+> SQLD 공식 교재 2권 ‘SQL 기본 및 응용’ **기출예상문제 2-7절 (p.166~176)** 기반 정리
 
 ---
 
-## 💬 느낀점 / 메모
-- 서브쿼리는 **데이터 흐름을 제어하는 핵심 문법**이다.  
-- `EXISTS`는 IN보다 빠른 경우가 많다 (특히 대용량 테이블).  
-- 상관 서브쿼리는 편리하지만, 실행 횟수가 많아 성능에 유의해야 한다.  
+## **💬 느낀점 / 메모**
+- 서브쿼리는 SQL 구조를 논리적으로 확장시키는 강력한 도구임을 실감했다.  
+- EXISTS와 IN의 차이를 성능 관점에서 비교하니, 실무 최적화 포인트를 이해할 수 있었다.  
+- 복잡한 조건일수록 서브쿼리보다 JOIN을 고려해야 한다는 점을 배웠다.
 
 ---
 
-## 🔗 참고자료
-- 아이리포 SQLD 강의 – 2과목 6강: 서브쿼리  
-- SQLD 교재 2권 p.119~142  
-- [서브쿼리 개념 및 활용 – SQLGate 블로그](https://www.sqlgate.com/blog/sql-subquery-guide)
-
+## **🔗 참고자료**
+- 아이리포 SQLD 강의 – 2과목 13강 (유튜브 13강): 서브쿼리 개념 및 활용  
+- SQLD 공식 교재 2권 p.109~128, p.166~176 (기출예상문제)  
+- [서브쿼리 개념 및 EXISTS 활용 – SQLGate 블로그](https://www.sqlgate.com/blog/sql-subquery-exists)
