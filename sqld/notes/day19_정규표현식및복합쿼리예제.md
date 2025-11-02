@@ -1,23 +1,23 @@
-# SQLD Day 19 – 정규표현식 / 복합 쿼리 예제 (2025-10-31)
+# **SQLD Day 19 – 정규표현식, 복합 쿼리 예제 (2025-10-31)**
 
-> 날짜: 2025-10-31  
-> 학습자: Jaerok Kim (Raprok612)  
-> 강의: 27~29강  
-> 주제: 정규표현식 / 복합 쿼리 예제  
+> 📘 SQLD 2과목 | SQL 기본 및 응용  
+> 🧑‍💻 학습자: Jaerok Kim (Raprok612)
 
 ---
 
-## 🎯 학습 목표
+## **🎯 학습 목표**
 
-- SQL 내 정규표현식(Regular Expression) 문법 이해 및 패턴 매칭 활용
-- 복합 쿼리(CASE, DECODE, 복합 조건)의 실제 적용 예제 학습
-- 실무형 데이터 필터링 및 문자열 검증 로직 설계 능력 향상
+- SQL 내 정규표현식(Regular Expression) 문법과 활용 이해  
+- 복합 쿼리(CASE, DECODE, 조건 분기)의 실제 예제 분석  
+- 문자열 검증 및 데이터 필터링 로직 설계 능력 강화
 
 ---
 
-## 🧠 이론 정리
+## **🧠 이론 정리**
 
-### 🔹 1. 정규표현식 기본 문법
+### **1️⃣ 정규표현식 (Regular Expression)**
+
+> SQL에서 문자열 패턴을 검증하거나 추출할 때 사용하는 문법
 
 | 패턴 | 의미 | 예시 |
 |------|------|------|
@@ -27,63 +27,60 @@
 | `*` | 0개 이상 반복 | `A*` → A가 0번 이상 반복 |
 | `+` | 1개 이상 반복 | `A+` → A가 1번 이상 반복 |
 | `[]` | 문자 집합 | `[0-9]`, `[A-Z]` |
-| `|` | OR 연산자 | `(ABC|DEF)` → ABC 또는 DEF |
-| `()` | 그룹 | `(ab)+` → ab 반복 |
+| `{n,m}` | n~m번 반복 | `[0-9]{4}` → 숫자 4자리 |
+| `|` | OR 조건 | `(ABC|DEF)` → ABC 또는 DEF |
 
-**활용 예시**
 ```sql
 SELECT *
 FROM CUSTOMER
 WHERE REGEXP_LIKE(PHONE, '^010-[0-9]{4}-[0-9]{4}$');
 ```
 
-> ☑️ 전화번호 형식 검증, 이메일 유효성 검증 등에 자주 사용됨.
+> 💡 전화번호·이메일 등 문자열 형식 검증에 자주 사용됨.
 
 ---
 
-### 🔹 2. 복합 쿼리 (CASE, DECODE, 조건문)
+### **2️⃣ 복합 쿼리 (CASE, DECODE, 조건문)**
 
-**CASE 문 기본형**
+| 구문 | 설명 | 예시 |
+|------|------|------|
+| **CASE** | 다중 조건 분기 | `CASE WHEN SAL >= 5000 THEN 'HIGH' WHEN SAL >= 3000 THEN 'MID' ELSE 'LOW' END` |
+| **DECODE** | 단일 조건 비교 | `DECODE(GRADE, 'A','Excellent','B','Good','C','Average','Unknown')` |
+| **복합 쿼리 응용** | CASE + GROUP BY + JOIN 등 결합 | `CASE WHEN JOB='SALESMAN' THEN COMM ELSE 0 END` |
+
 ```sql
-SELECT NAME,
-       CASE
-           WHEN SALARY >= 5000 THEN 'HIGH'
-           WHEN SALARY BETWEEN 3000 AND 4999 THEN 'MID'
+SELECT ENAME,
+       CASE 
+           WHEN SAL >= 5000 THEN 'HIGH'
+           WHEN SAL BETWEEN 3000 AND 4999 THEN 'MID'
            ELSE 'LOW'
        END AS SAL_GRADE
 FROM EMP;
 ```
 
-**DECODE 함수**
-```sql
-SELECT DECODE(GRADE, 'A', 'Excellent', 'B', 'Good', 'C', 'Average', 'Unknown')
-FROM STUDENT;
-```
-
-> ☑️ 조건 분기 로직을 SQL 내에서 처리할 때 유용.  
-> ☑️ 복합 쿼리는 “조건 처리 + 결과 분류 + 문자열 검증”이 핵심.
+> ⚙️ 복합 조건문은 가독성과 유지보수성을 높이기 위해 CASE WHEN 사용을 권장.
 
 ---
 
-## ⚙️ 모델링 유의사항
+## **⚙️ 모델링 유의사항**
 
-- 정규표현식 기반 검증 로직은 **응용 계층보다는 데이터 무결성 보조** 용도로 사용.  
-- 복합 조건식은 **CASE WHEN > DECODE > IF** 순으로 가독성 유지.  
-- SQL 내 논리 복잡도가 높아질수록, **뷰(View)** 혹은 **임시 테이블**로 분리 설계.  
-- 입력값 검증은 DB와 APP 간 **중복 방지 설계** 필요.  
+1. 정규표현식 기반 검증은 **무결성 보조** 용도로 활용 (비즈니스 로직은 앱단 처리)  
+2. 복합 조건식은 **CASE > DECODE > IF** 순으로 가독성 유지  
+3. 로직이 길어지면 **뷰(View)** 나 **임시 테이블**로 분리  
+4. REGEXP_LIKE는 DBMS마다 문법 차이 있음 (Oracle / MySQL 구분)  
 
 ---
 
-## 🧮 실습 예제
+## **🧮 예제 및 실습**
 
-### ✅ 1. 이메일 검증
+**예제 1️⃣ – 이메일 검증**  
 ```sql
 SELECT EMAIL
 FROM USERS
 WHERE REGEXP_LIKE(EMAIL, '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$');
 ```
 
-### ✅ 2. 급여 등급 분류
+**예제 2️⃣ – 급여 등급 분류**  
 ```sql
 SELECT EMPNO, ENAME, SAL,
        CASE
@@ -94,40 +91,41 @@ SELECT EMPNO, ENAME, SAL,
 FROM EMP;
 ```
 
-### ✅ 3. 문자열 패턴 필터링
+**예제 3️⃣ – 문자열 패턴 필터링**  
 ```sql
 SELECT PRODUCT_NAME
 FROM PRODUCTS
 WHERE REGEXP_LIKE(PRODUCT_NAME, '(Pro|Max)$');
 ```
 
----
-
-## 🧾 기출 포인트
-
-| 구분 | 출제 유형 | 키워드 |
-|------|------------|---------|
-| 실무형 | 정규표현식 검증 | `REGEXP_LIKE`, `^`, `$`, `{}` |
-| 개념형 | CASE / DECODE 차이 | “CASE는 범위, DECODE는 단일값 비교” |
-| 응용형 | 문자열 조건 쿼리 | 패턴 + 조건식 혼합 문제 |
-
-> 💡 기출에서는 “정규표현식 검증 조건 + CASE문”이 결합된 형태 자주 등장.
+- [x] REGEXP_LIKE 패턴 검증 실습  
+- [x] CASE문 / DECODE문 비교  
+- [x] 조건 분기형 복합 쿼리 작성
 
 ---
 
-## 💬 느낀점
+## **🧾 기출 복습**
 
-정규표현식은 SQLD에서 등장 빈도는 낮지만, **데이터 정합성 검증** 및 **실무형 필터링**에서 강력한 도구였다.  
-복합 쿼리(CASE / DECODE)는 로직 흐름 제어에 핵심적인 구문으로,  
-파이썬의 if-else 문과 동일한 사고 구조로 이해하니 훨씬 명확하게 다가왔다.
+| 회차 | 문항 | 주제 | 결과 | 비고 |
+|------|------|------|------|------|
+| 2024 2회 | Q60–Q65 | 정규표현식 검증 | ✅ | 패턴 해석 정확 |
+| 2023 1회 | Q55–Q60 | CASE / DECODE | ⚠ | 조건 순서 혼동 |
+| 2022 2회 | Q50–Q54 | 문자열 필터링 | ✅ | REGEXP_LIKE 활용 |
+
+> 📘 기출 출처: SQLD 공식 교재 2권 ‘SQL 기본 및 응용’ 기출예상문제 2-13절~2-14절 (p.210~228)
+
+---
+
+## **💬 느낀점 / 메모**
+
+- 정규표현식은 SQL에서도 문자열 패턴 검증에 강력한 도구였다.  
+- CASE문은 로직이 명확하고 가독성이 좋아 실무 SQL에도 자주 쓰인다.  
+- 복합 쿼리를 구조적으로 작성하는 습관이 필요함을 느꼈다.
 
 ---
 
-## 🔗 참고자료
+## **🔗 참고자료**
 
-- SQLD 공식 교재 Chapter 5 (문자열 함수 및 패턴 매칭)
-- DataEdu SQLD 강의 27~29강
-- Oracle SQL Developer Docs – REGEXP_LIKE
-- https://docs.oracle.com/en/database/oracle/oracle-database/
-
----
+- 아이리포 SQLD 강의 – 2과목 27~29강 (유튜브 27~29강): 정규표현식 / 복합 쿼리 예제  
+- SQLD 공식 교재 2권 p.210~228  
+- [Oracle REGEXP_LIKE Documentation](https://docs.oracle.com/en/database/oracle/oracle-database/)
