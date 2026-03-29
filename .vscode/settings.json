@@ -9,6 +9,6 @@
   },
   "markdown.preview.breaks": true,
   "markdown.previewFrontMatter": "show",
-  "workbench.colorTheme": "Default Dark Modern",
+  "workbench.colorTheme": "Dark Modern",
   "workbench.editor.enablePreview": false
 }
