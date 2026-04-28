@@ -1,10 +1,10 @@
 
 ---
-
+Test 01
 ## 🧩 sqld용 README.md
 ✅ 파일 위치: `study-log/sqld/README.md`
 
-이건 “각 학습 모듈(자격증별/부트캠프별)”에 대한 구체적인 설명 문서입니다.
+이건 “각 학습 모듈(자격증별/부트캠프별)”에 대한 구체적인 설명 문서입니다. 
 
 ```markdown
 # 🧠 Study Modules Overview
