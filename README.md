@@ -1,4 +1,4 @@
-2026-05-13 수
+2026-05-15 금
 
 # 📚 Study Log Repository
 
