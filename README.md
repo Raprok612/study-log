@@ -1,4 +1,4 @@
-2026-06-01 월
+2026-06-02 화
 
 # 📚 Study Log Repository
 
