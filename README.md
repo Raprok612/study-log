@@ -1,4 +1,4 @@
-2026-06-20 토
+2026-06-21 일
 
 # 📚 Study Log Repository
 
