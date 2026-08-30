@@ -1,4 +1,4 @@
-2026-08-29 토
+2026-08-30 일
 
 # 📚 Study Log Repository
 
