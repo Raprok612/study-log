@@ -1,4 +1,4 @@
-2026-10-02 금
+2026-10-02 금 엥
 
 # 📚 Study Log Repository
 
