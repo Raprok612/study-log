@@ -1,4 +1,4 @@
-2026-10-7 토
+2026-10-17 토
 
 # 📚 Study Log Repository
 
