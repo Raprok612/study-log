@@ -1,4 +1,4 @@
-2026-10-18 일
+2026-10-19 월
 
 # 📚 Study Log Repository
 
