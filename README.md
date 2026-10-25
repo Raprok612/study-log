@@ -1,4 +1,4 @@
-2026-10-24 토
+2026-10-25 일
 
 # 📚 Study Log Repository
 
