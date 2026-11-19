@@ -1,4 +1,4 @@
-2026-11-19 목
+2026-11-20 금
 
 # 📚 Study Log Repository
 
