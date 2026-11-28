@@ -1,4 +1,4 @@
-2026-11-27 금
+2026-11-28 토
 
 # 📚 Study Log Repository
 
